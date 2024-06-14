@@ -21,18 +21,17 @@ const createUserSchema = z.object({
 const updateUserSchema = z.object({
   name: z.string().nonempty({ message: 'Name is required' }).optional(),
   email: z.string().email({ message: 'Invalid email address' }).optional(),
-  password: z
-    .string()
-    .min(6, { message: 'Password must be at least 6 characters long' })
-    .optional(),
+  // password: z
+  //   .string()
+  //   .min(6, { message: 'Password must be at least 6 characters long' })
+  //   .optional(),
   phone: z.string().optional(),
   address: z.string().optional(),
   // role: z
-  //   .enum([USER_ROLE.ADMIN, USER_ROLE.USER], {
+  //   .nativeEnum(USER_ROLE, {
   //     message: 'Role must be either ADMIN or USER',
   //   })
   //   .optional(),
-  // passwordChangedAt: z.date().optional(),
 });
 
 export const userValidation = {

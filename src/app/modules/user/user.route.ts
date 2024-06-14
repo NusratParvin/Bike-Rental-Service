@@ -15,6 +15,7 @@ router.get(
 router.put(
   '/me',
   auth(USER_ROLE.admin, USER_ROLE.user),
+  zodValidationRequest(userValidation.updateUserSchema),
   UserControllers.updateUserProfile,
 );
 

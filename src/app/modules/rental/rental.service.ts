@@ -8,8 +8,9 @@ import mongoose from 'mongoose';
 const createRentalIntoDB = async (userId: string, payload: TRental) => {
   //Check the bike's existence and availability
   const bike = await Bike.findById(payload.bikeId);
-
-  if (!bike || !bike.isAvailable) {
+  if (!bike) {
+    throw new AppError(httpStatus.NOT_FOUND, 'No Data Found');
+  } else if (!bike?.isAvailable) {
     throw new AppError(httpStatus.NOT_FOUND, 'Bike not available');
   }
 
@@ -81,11 +82,18 @@ const returnRentalIntoDB = async (rentalId: string) => {
     }
     const totalCost = Number((rentalDuration * bike.pricePerHour).toFixed(2));
 
-    // Update the rental info
-    rental.returnTime = returnTime;
-    rental.totalCost = totalCost;
-    rental.isReturned = true;
-    await rental.save({ session });
+    //transaction-1 in rental collection
+    await Rental.findByIdAndUpdate(
+      rentalId,
+      {
+        returnTime,
+        totalCost,
+        isReturned: true,
+      },
+      { session, new: true },
+    );
+
+    //transaction-2 in bikes collection
 
     // Update the bike's availability status
     await Bike.findByIdAndUpdate(
@@ -97,16 +105,19 @@ const returnRentalIntoDB = async (rentalId: string) => {
     await session.commitTransaction();
     session.endSession();
 
-    return rental;
-  } catch (error) {
+    const updatedRental = await Rental.findById(rentalId);
+
+    return updatedRental;
+  } catch (error: any) {
     await session.abortTransaction();
     session.endSession();
-    throw error;
+    throw new Error(error);
   }
 };
 
 const getUserRentalsFromDB = async (userId: string) => {
   const rentals = await Rental.find({ userId });
+
   return rentals;
 };
 

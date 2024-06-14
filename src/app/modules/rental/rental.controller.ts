@@ -11,6 +11,15 @@ const createRental = catchAsync(async (req, res) => {
   };
   const newRental = await RentalServices.createRentalIntoDB(userId, rentalData);
 
+  if (!newRental.length) {
+    sendResponse(res, {
+      statusCode: httpStatus.NOT_FOUND,
+      success: false,
+      message: 'Failed to create rental record',
+      data: newRental,
+    });
+  }
+
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
@@ -23,6 +32,15 @@ const getUserRentals = catchAsync(async (req, res) => {
   const userId = req.user.id;
 
   const rentals = await RentalServices.getUserRentalsFromDB(userId);
+
+  if (!rentals.length) {
+    sendResponse(res, {
+      statusCode: httpStatus.NOT_FOUND,
+      success: false,
+      message: 'No Data Found',
+      data: rentals,
+    });
+  }
 
   sendResponse(res, {
     statusCode: httpStatus.OK,

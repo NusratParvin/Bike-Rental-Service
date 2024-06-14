@@ -11,9 +11,12 @@ const auth = (...requiredRoles: TUserRole[]) => {
   return catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const authToken = req.headers.authorization;
     const token = authToken?.split(' ')[1];
-    // checking if the token is missing
+
     if (!token) {
-      throw new AppError(httpStatus.UNAUTHORIZED, 'You are not authorized!');
+      throw new AppError(
+        httpStatus.UNAUTHORIZED,
+        'You have no access to this route',
+      );
     }
 
     const decoded = jwt.verify(
@@ -38,6 +41,7 @@ const auth = (...requiredRoles: TUserRole[]) => {
     // ) {
     //   throw new AppError(httpStatus.UNAUTHORIZED, "You are not authorized !");
     // }
+
     if (user.role !== role) {
       throw new AppError(
         httpStatus.UNAUTHORIZED,

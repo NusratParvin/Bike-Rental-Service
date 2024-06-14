@@ -2,6 +2,7 @@ import httpStatus from 'http-status';
 import { catchAsync } from '../../utils/catchAsync';
 import sendResponse from '../../utils/sendResponse';
 import { BikeServices } from './bike.service';
+import AppError from '../../errors/AppError';
 
 const createBike = catchAsync(async (req, res) => {
   const bikeData = req.body;
@@ -17,6 +18,15 @@ const createBike = catchAsync(async (req, res) => {
 
 const getAllBike = catchAsync(async (req, res) => {
   const result = await BikeServices.getAllBikeFromDB();
+
+  if (result.length === 0) {
+    sendResponse(res, {
+      statusCode: httpStatus.NOT_FOUND,
+      success: false,
+      message: 'No Data Found',
+      data: result,
+    });
+  }
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
@@ -42,6 +52,10 @@ const updateBike = catchAsync(async (req, res) => {
 const deleteBike = catchAsync(async (req, res) => {
   const bikeId = req.params.id;
   const deletedBike = await BikeServices.deleteBikeFromDB(bikeId);
+
+  if (!deletedBike) {
+    throw new AppError(httpStatus.NOT_FOUND, 'Bike not found');
+  }
 
   sendResponse(res, {
     statusCode: httpStatus.OK,

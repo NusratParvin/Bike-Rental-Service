@@ -18,6 +18,7 @@ router.get(
   auth(USER_ROLE.admin, USER_ROLE.user),
   BikeControllers.getAllBike,
 );
+
 router.put(
   '/:id',
 
