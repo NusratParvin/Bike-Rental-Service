@@ -7,24 +7,9 @@ import AppError from '../../errors/AppError';
 import config from '../../config';
 
 const getUser = catchAsync(async (req, res) => {
-  const authToken = req.headers.authorization;
-  const token = authToken?.split(' ')[1];
-  console.log(authToken);
-  if (!token) {
-    throw new AppError(httpStatus.UNAUTHORIZED, 'You are not authorized!');
-  }
-  console.log('Token===', token);
+  const { id } = req.user;
 
-  console.log('new===', config.jwt_access_secret);
-
-  const decoded = jwt.verify(
-    token,
-    config.jwt_access_secret as string,
-  ) as JwtPayload;
-
-  const { userEmail, role } = decoded;
-
-  const result = await UserServices.getUserFromDB(userEmail);
+  const result = await UserServices.getUserFromDB(id);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
@@ -34,6 +19,22 @@ const getUser = catchAsync(async (req, res) => {
   });
 });
 
+const updateUserProfile = catchAsync(async (req, res) => {
+  const { id } = req.user;
+
+  const { _id, role, ...updatedData } = req.body;
+
+  const result = await UserServices.updateUserIntoDB(id, updatedData);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Profile updated successfully',
+    data: result,
+  });
+});
+
 export const UserControllers = {
   getUser,
+  updateUserProfile,
 };

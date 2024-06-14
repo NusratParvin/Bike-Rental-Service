@@ -1,10 +1,10 @@
 import express from 'express';
 import zodValidationRequest from '../../middlewares/zodValidationRequest';
-import { userValidation } from '../user/user.validate';
 import { AuthValidation } from './auth.validate';
 import { AuthControllers } from './auth.controller';
 import jwt from 'jsonwebtoken';
 import config from '../../config';
+import { userValidation } from '../user/user.validate';
 
 const router = express.Router();
 

@@ -2,6 +2,7 @@ import { z } from 'zod';
 import { USER_ROLE } from './user.constants';
 
 const createUserSchema = z.object({
+  // id: z.string().nonempty({ message: 'Name is required' }),
   name: z.string().nonempty({ message: 'Name is required' }),
   email: z
     .string()
@@ -15,10 +16,6 @@ const createUserSchema = z.object({
   address: z.string().nonempty({ message: 'Address is required' }),
 
   role: z.nativeEnum(USER_ROLE),
-  // role: z.enum([USER_ROLE.ADMIN, USER_ROLE.USER], {
-  //   message: 'Role must be either ADMIN or USER',
-  // }),
-  // passwordChangedAt: z.date().optional(),
 });
 
 const updateUserSchema = z.object({
@@ -30,11 +27,11 @@ const updateUserSchema = z.object({
     .optional(),
   phone: z.string().optional(),
   address: z.string().optional(),
-  role: z
-    .enum([USER_ROLE.ADMIN, USER_ROLE.USER], {
-      message: 'Role must be either ADMIN or USER',
-    })
-    .optional(),
+  // role: z
+  //   .enum([USER_ROLE.ADMIN, USER_ROLE.USER], {
+  //     message: 'Role must be either ADMIN or USER',
+  //   })
+  //   .optional(),
   // passwordChangedAt: z.date().optional(),
 });
 

@@ -1,10 +1,10 @@
 import httpStatus from 'http-status';
 import AppError from '../../errors/AppError';
-import { TUser } from '../user/user.interface';
 import { TLoginUser } from './auth.interface';
 import { User } from '../user/user.model';
 import { createJwtToken } from './auth.utils';
 import config from '../../config';
+import { TUser } from '../user/user.interface';
 
 const signUp = async (payload: TUser) => {
   const userExists = await User.isUserExistsByEmail(payload.email);
@@ -35,8 +35,8 @@ const login = async (payload: TLoginUser) => {
   }
   // console.log(userExists);
   const jwtPayload = {
-    userEmail: userExists.email,
-    // id: userExists._id,
+    email: userExists.email,
+    id: userExists._id,
     role: userExists.role,
   };
 
