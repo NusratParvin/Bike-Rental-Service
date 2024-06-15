@@ -59,146 +59,148 @@ cd bike-rental-service
 
 ### User Routes
 
-- **Sign Up**
+**Sign Up**
 
-  - **Endpoint:** `/api/auth/signup`
-  - **Method:** `POST`
-  - **Request Body:**
-
-    ```
-
-    {
-    "name": "John Doe",
-    "email": "john@example.com",
-    "password": "password123",
-    "phone": "1234567890",
-    "address": "123 Main St, Anytown",
-    "role": "admin"
-    }
-    ```
-
-  ``
-
-  - **Response :**
-    ```
-    {
-    "success": true,
-    "statusCode": 201,
-    "message": "User registered successfully",
-    "data": {
-    "_id": "60d9c4e4f3b4b544b8b8d1f5",
-    "name": "John Doe",
-    "email": "john@example.com",
-    "phone": "1234567890",
-    "address": "123 Main St, Anytown",
-    "role": "admin",
-    "createdAt": "2024-06-10T13:26:51.289Z",
-    "updatedAt": "2024-06-10T13:26:51.289Z",
-    "__v": 0
-    }
-    }
-    ``
-    ```
-
-- **User Login**
-
-  - **Endpoint:** `/api/auth/login`
-  - **Method:** `POST`
-  - **Request Body:**
-
-    ```
-
-    {
-    "email": "john@example.com",
-    "password": "password123"
-    }
-    ```
-
-  - **Response :**
+- **Endpoint:** `/api/auth/signup`
+- **Method:** `POST`
+- **Request Body:**
 
   ```
 
   {
-  "success": true,
-  "statusCode": 200,
-  "message": "User logged in successfully",
-  "token": "jwt_token",
-  "data": {
-  "\_id": "60d9c4e4f3b4b544b8b8d1c3",
   "name": "John Doe",
   "email": "john@example.com",
+  "password": "password123",
   "phone": "1234567890",
   "address": "123 Main St, Anytown",
   "role": "admin"
   }
+  ```
+
+``
+
+- **Response :**
+  ```
+  {
+  "success": true,
+  "statusCode": 201,
+  "message": "User registered successfully",
+  "data": {
+  "_id": "60d9c4e4f3b4b544b8b8d1f5",
+  "name": "John Doe",
+  "email": "john@example.com",
+  "phone": "1234567890",
+  "address": "123 Main St, Anytown",
+  "role": "admin",
+  "createdAt": "2024-06-10T13:26:51.289Z",
+  "updatedAt": "2024-06-10T13:26:51.289Z",
+  "__v": 0
   }
-
+  }
   ``
-
   ```
 
-- **Get Profile**
+**User Login**
 
-  - **Endpoint:** `/api/users/me`
-  - **Method:** `GET`
-  - **Request Headers:** `Authorization: Bearer jwt_token`:
+- **Endpoint:** `/api/auth/login`
+- **Method:** `POST`
+- **Request Body:**
 
-  - **Response :**
-    ```
-    {
-    "success": true,
-    "statusCode": 200,
-    "message": "User profile retrieved successfully",
-    "data": {
-    "_id": "6666ff917181b8e5ffe04f91",
-    "name": "admin",
-    "email": "admin@gmail.com",
-    "phone": "1234567890",
-    "address": "123 Main St, Anytown",
-    "role": "admin",
-    "createdAt": "2024-06-10T13:28:49.260Z",
-    "updatedAt": "2024-06-10T13:28:49.260Z",
-    "__v": 0
-    }
-    }
-    ```
-
-  ```
-
-  - **Update Profile**
-
-  - **Endpoint:** `/api/users/me`
-  - **Method:** `PUT`
-  - **Request Headers:** `Authorization: Bearer jwt_token`
-
-  - **Request Body :**
   ```
 
   {
-  "name": "John Updated",
-  "phone": "0987654321"
+  "email": "john@example.com",
+  "password": "password123"
   }
-
   ```
 
-  - **Response :**
-  ```
+- **Response :**
 
+```
+
+{
+"success": true,
+"statusCode": 200,
+"message": "User logged in successfully",
+"token": "jwt_token",
+"data": {
+"\_id": "60d9c4e4f3b4b544b8b8d1c3",
+"name": "John Doe",
+"email": "john@example.com",
+"phone": "1234567890",
+"address": "123 Main St, Anytown",
+"role": "admin"
+}
+}
+
+``
+
+```
+
+**Get Profile**
+
+- **Endpoint:** `/api/users/me`
+- **Method:** `GET`
+- **Request Headers:** `Authorization: Bearer jwt_token`:
+
+- **Response :**
+
+  ```
   {
   "success": true,
   "statusCode": 200,
-  "message": "Profile updated successfully",
+  "message": "User profile retrieved successfully",
   "data": {
-  "\_id": "60d9c4e4f3b4b544b8b8d1c5",
-  "name": "John Updated",
-  "email": "john@example.com",
-  "phone": "0987654321",
+  "_id": "6666ff917181b8e5ffe04f91",
+  "name": "admin",
+  "email": "admin@gmail.com",
+  "phone": "1234567890",
   "address": "123 Main St, Anytown",
-  "role": "admin"
+  "role": "admin",
+  "createdAt": "2024-06-10T13:28:49.260Z",
+  "updatedAt": "2024-06-10T13:28:49.260Z",
+  "__v": 0
   }
   }
+  ```
 
-  ``
+**Update Profile**
+
+- **Endpoint:** `/api/users/me`
+- **Method:** `PUT`
+- **Request Headers:** `Authorization: Bearer jwt_token`
+
+- **Request Body :**
+
+```
+
+{
+"name": "John Updated",
+"phone": "0987654321"
+}
+
+```
+
+- **Response :**
+
+```
+
+{
+"success": true,
+"statusCode": 200,
+"message": "Profile updated successfully",
+"data": {
+"\_id": "60d9c4e4f3b4b544b8b8d1c5",
+"name": "John Updated",
+"email": "john@example.com",
+"phone": "0987654321",
+"address": "123 Main St, Anytown",
+"role": "admin"
+}
+}
+
+``
+```
 
 ### Bike Routes
 
@@ -222,8 +224,6 @@ cd bike-rental-service
     }
     ```
 
-  ```
-
   - **Response:**
 
   ```
@@ -246,7 +246,7 @@ cd bike-rental-service
   }
   }
 
-  ``
+  ```
 
 - **Get All Bikes**
 
@@ -275,8 +275,6 @@ cd bike-rental-service
     ]
     }
     ```
-
-  ``
 
 - **Update Bike (Admin Only)**
 
@@ -312,8 +310,6 @@ cd bike-rental-service
   "brand": "Yamaha"
   }
   }
-  ``
-
   ```
 
 - **Delete Bike (Admin Only)**
@@ -342,8 +338,6 @@ cd bike-rental-service
     }
     }
     ```
-
-  ``
 
 ### Rental Routes
 
@@ -485,5 +479,4 @@ Validation errors from Zod are handled explicitly in the controllers, and other 
   "message": "You have no access to this route"
   }
 
-  ``
   ```
