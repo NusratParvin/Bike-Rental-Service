@@ -70,4 +70,11 @@ userSchema.statics.isPasswordMatched = async function (
   return bcrypt.compare(plainPassword, hashedPassword);
 };
 
+userSchema.set('toJSON', {
+  transform: (doc, ret) => {
+    delete ret.password;
+    return ret;
+  },
+});
+
 export const User = model<TUser, UserModel>('user', userSchema);

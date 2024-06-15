@@ -14,7 +14,9 @@ const signUp = async (payload: TUser) => {
   }
 
   const result = await User.create(payload);
-  return result;
+  const user = result.toJSON();
+
+  return user;
 };
 
 const login = async (payload: TLoginUser) => {

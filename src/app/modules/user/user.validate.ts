@@ -27,11 +27,6 @@ const updateUserSchema = z.object({
   //   .optional(),
   phone: z.string().optional(),
   address: z.string().optional(),
-  // role: z
-  //   .nativeEnum(USER_ROLE, {
-  //     message: 'Role must be either ADMIN or USER',
-  //   })
-  //   .optional(),
 });
 
 export const userValidation = {
