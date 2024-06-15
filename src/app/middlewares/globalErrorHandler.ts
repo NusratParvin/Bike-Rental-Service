@@ -1,5 +1,4 @@
 import { ErrorRequestHandler } from 'express';
-import config from '../config';
 import AppError from '../errors/AppError';
 import { TErrorSources } from '../interface/error';
 import { ZodError } from 'zod';

@@ -1,17 +1,16 @@
-import { Model } from 'mongoose';
+import { Document, Model } from 'mongoose';
 import { USER_ROLE } from './user.constants';
 
 export type TUserRole = keyof typeof USER_ROLE;
 
-export interface TUser {
-  id?: string;
+export interface TUser extends Document {
+  // _id?: string;
   name: string;
   email: string;
   password: string;
   phone: string;
   address: string;
   role: TUserRole;
-  //   passwordChangedAt?: Date;
 }
 
 export interface UserModel extends Model<TUser> {

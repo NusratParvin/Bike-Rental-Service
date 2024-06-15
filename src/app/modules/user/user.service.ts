@@ -4,7 +4,7 @@ import AppError from '../../errors/AppError';
 import { TUser } from './user.interface';
 
 const getUserFromDB = async (id: string) => {
-  const result = await User.findById(id);
+  const result = await User.findById(id).select('-password');
 
   return result;
 };
@@ -22,8 +22,7 @@ const updateUserIntoDB = async (userId: string, payload: Partial<TUser>) => {
     userId,
     { $set: payload },
     { new: true, runValidators: true },
-  );
-  // ).select('-password');
+  ).select('-password');
 
   if (!updatedUser) {
     throw new Error('User not found');

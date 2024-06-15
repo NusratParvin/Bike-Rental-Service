@@ -33,10 +33,12 @@ const login = async (payload: TLoginUser) => {
   if (!isPasswordMatched) {
     throw new AppError(httpStatus.BAD_REQUEST, 'Password does not match!');
   }
-  // console.log(userExists);
+  // if (!userExists._id) {
+  //   throw new AppError(httpStatus.INTERNAL_SERVER_ERROR, 'User ID not found');
+  // }
   const jwtPayload = {
     email: userExists.email,
-    id: userExists._id,
+    id: userExists._id as string,
     role: userExists.role,
   };
 

@@ -2,9 +2,6 @@ import httpStatus from 'http-status';
 import { catchAsync } from '../../utils/catchAsync';
 import sendResponse from '../../utils/sendResponse';
 import { UserServices } from './user.service';
-import jwt, { JwtPayload } from 'jsonwebtoken';
-import AppError from '../../errors/AppError';
-import config from '../../config';
 
 const getUser = catchAsync(async (req, res) => {
   const { id } = req.user;

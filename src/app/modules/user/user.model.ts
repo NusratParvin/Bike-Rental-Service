@@ -6,9 +6,9 @@ import config from '../../config';
 
 const userSchema = new Schema<TUser, UserModel>(
   {
-    id: {
-      type: String,
-    },
+    // _id: {
+    //   type: String,
+    // },
     name: {
       type: String,
       required: true,

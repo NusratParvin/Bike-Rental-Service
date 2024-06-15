@@ -2,7 +2,6 @@ import { Bike } from './bike.model';
 import { TBike } from './bike.interface';
 import AppError from '../../errors/AppError';
 import httpStatus from 'http-status';
-import sendResponse from '../../utils/sendResponse';
 
 const createBikeIntoDB = async (payload: TBike) => {
   const result = await Bike.create(payload);
