@@ -64,7 +64,8 @@ cd bike-rental-service
   - **Endpoint:** `/api/auth/signup`
   - **Method:** `POST`
   - **Request Body:**
-    ``json
+
+    ```
 
     {
     "name": "John Doe",
@@ -74,8 +75,9 @@ cd bike-rental-service
     "address": "123 Main St, Anytown",
     "role": "admin"
     }
+    ```
 
-  ``
+  ```
 
   - **Response :**
     ``json
@@ -97,6 +99,8 @@ cd bike-rental-service
     }
 
   ``
+
+  ```
 
 - **User Login**
 
