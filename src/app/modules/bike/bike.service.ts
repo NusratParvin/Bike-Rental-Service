@@ -10,7 +10,7 @@ const createBikeIntoDB = async (payload: TBike) => {
 };
 
 const getAllBikeFromDB = async () => {
-  const result = await Bike.find();
+  const result = await Bike.find({ isAvailable: true });
 
   return result;
 };

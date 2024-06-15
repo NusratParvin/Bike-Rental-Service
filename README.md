@@ -32,7 +32,7 @@ https://bike-rental-service-serverside.vercel.app/
 
 ```sh
 git clone https://github.com/NusratParvin/Bike-Rental-Service
-cd bike-rental-reservation-system
+cd bike-rental-service
 ```
 
 2. **Install dependencies:**
