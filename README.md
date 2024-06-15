@@ -114,9 +114,8 @@ cd bike-rental-service
     }
     ```
 
-  ```
-
   - **Response :**
+
   ```
 
   {
@@ -135,6 +134,8 @@ cd bike-rental-service
   }
 
   ``
+
+  ```
 
 - **Get Profile**
 
