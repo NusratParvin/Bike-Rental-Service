@@ -77,16 +77,16 @@ cd bike-rental-service
     }
     ```
 
-  ```
+  ``
 
   - **Response :**
-    ``json
+    ```
     {
     "success": true,
     "statusCode": 201,
     "message": "User registered successfully",
     "data": {
-    "\_id": "60d9c4e4f3b4b544b8b8d1f5",
+    "_id": "60d9c4e4f3b4b544b8b8d1f5",
     "name": "John Doe",
     "email": "john@example.com",
     "phone": "1234567890",
@@ -94,44 +94,45 @@ cd bike-rental-service
     "role": "admin",
     "createdAt": "2024-06-10T13:26:51.289Z",
     "updatedAt": "2024-06-10T13:26:51.289Z",
-    "\_\_v": 0
+    "__v": 0
     }
     }
-
-  ``
-
-  ```
+    ``
+    ```
 
 - **User Login**
 
   - **Endpoint:** `/api/auth/login`
   - **Method:** `POST`
   - **Request Body:**
-    ``json
+
+    ```
 
     {
     "email": "john@example.com",
     "password": "password123"
     }
+    ```
 
-  ``
+  ```
 
   - **Response :**
-    ``json
-    {
-    "success": true,
-    "statusCode": 200,
-    "message": "User logged in successfully",
-    "token": "jwt_token",
-    "data": {
-    "\_id": "60d9c4e4f3b4b544b8b8d1c3",
-    "name": "John Doe",
-    "email": "john@example.com",
-    "phone": "1234567890",
-    "address": "123 Main St, Anytown",
-    "role": "admin"
-    }
-    }
+  ```
+
+  {
+  "success": true,
+  "statusCode": 200,
+  "message": "User logged in successfully",
+  "token": "jwt_token",
+  "data": {
+  "\_id": "60d9c4e4f3b4b544b8b8d1c3",
+  "name": "John Doe",
+  "email": "john@example.com",
+  "phone": "1234567890",
+  "address": "123 Main St, Anytown",
+  "role": "admin"
+  }
+  }
 
   ``
 
@@ -142,13 +143,13 @@ cd bike-rental-service
   - **Request Headers:** `Authorization: Bearer jwt_token`:
 
   - **Response :**
-    ``json
+    ```
     {
     "success": true,
     "statusCode": 200,
     "message": "User profile retrieved successfully",
     "data": {
-    "\_id": "6666ff917181b8e5ffe04f91",
+    "_id": "6666ff917181b8e5ffe04f91",
     "name": "admin",
     "email": "admin@gmail.com",
     "phone": "1234567890",
@@ -156,42 +157,45 @@ cd bike-rental-service
     "role": "admin",
     "createdAt": "2024-06-10T13:28:49.260Z",
     "updatedAt": "2024-06-10T13:28:49.260Z",
-    "\_\_v": 0
+    "__v": 0
     }
     }
+    ```
 
-  ``
+  ```
 
   - **Update Profile**
 
   - **Endpoint:** `/api/users/me`
   - **Method:** `PUT`
-  - **Request Headers:** `Authorization: Bearer jwt_token`:
+  - **Request Headers:** `Authorization: Bearer jwt_token`
 
   - **Request Body :**
-    ``json
-    {
-    "name": "John Updated",
-    "phone": "0987654321"
-    }
+  ```
 
-  ``
+  {
+  "name": "John Updated",
+  "phone": "0987654321"
+  }
+
+  ```
 
   - **Response :**
-    ``json
-    {
-    "success": true,
-    "statusCode": 200,
-    "message": "Profile updated successfully",
-    "data": {
-    "\_id": "60d9c4e4f3b4b544b8b8d1c5",
-    "name": "John Updated",
-    "email": "john@example.com",
-    "phone": "0987654321",
-    "address": "123 Main St, Anytown",
-    "role": "admin"
-    }
-    }
+  ```
+
+  {
+  "success": true,
+  "statusCode": 200,
+  "message": "Profile updated successfully",
+  "data": {
+  "\_id": "60d9c4e4f3b4b544b8b8d1c5",
+  "name": "John Updated",
+  "email": "john@example.com",
+  "phone": "0987654321",
+  "address": "123 Main St, Anytown",
+  "role": "admin"
+  }
+  }
 
   ``
 
@@ -205,7 +209,7 @@ cd bike-rental-service
 
   - **Request Body:**
 
-    ``json
+    ```
     {
     "name": "Mountain Bike",
     "description": "A durable mountain bike for rough terrains.",
@@ -215,12 +219,14 @@ cd bike-rental-service
     "model": "X1",
     "brand": "Yamaha"
     }
+    ```
 
-  ``
+  ```
 
   - **Response:**
 
-  ``json
+  ```
+
   {
 
   "success": true,
@@ -247,8 +253,7 @@ cd bike-rental-service
   - **Method:** `GET`
   - **Response:**
 
-    ``json
-
+    ```
     {
     "success": true,
     "statusCode": 200,
@@ -268,6 +273,7 @@ cd bike-rental-service
     ...other bikes...
     ]
     }
+    ```
 
   ``
 
@@ -278,23 +284,23 @@ cd bike-rental-service
   - **Request Headers:** `Authorization: Bearer jwt_token`
   - **Request Body:**
 
-        `json
+  ```
 
     {
     "pricePerHour": 20
     }
-    `
+  ```
 
   - **Response:**
 
-  ``json
+  ```
   {
 
   "success": true,
   "statusCode": 200,
   "message": "Bike updated successfully",
   "data": {
-  "\_id": "bike_id",
+  "_id": "bike_id",
   "name": "Mountain Bike",
   "description": "A durable mountain bike for rough terrains.",
   "pricePerHour": 20,
@@ -307,6 +313,8 @@ cd bike-rental-service
   }
   ``
 
+  ```
+
 - **Delete Bike (Admin Only)**
 
   - **Endpoint:** `/api/bikes/:id`
@@ -314,14 +322,14 @@ cd bike-rental-service
   - **Request Headers:** `Authorization: Bearer jwt_token`
   - **Response:**
 
-    ``json
+    ```
     {
 
     "success": true,
     "statusCode": 200,
     "message": "Bike deleted successfully",
     "data": {
-    "\_id": "bike_id",
+    "_id": "bike_id",
     "name": "Mountain Bike",
     "description": "A durable mountain bike for rough terrains.",
     "pricePerHour": 20,
@@ -332,6 +340,7 @@ cd bike-rental-service
     "brand": "Yamaha"
     }
     }
+    ```
 
   ``
 
@@ -344,24 +353,24 @@ cd bike-rental-service
   - **Request Headers:** `Authorization: Bearer jwt_token`
   - **Request Body:**
 
-    ``json
+    ```
 
     {
     "bikeId": "60d9c4e4f3b4b544b8b8d1c4",
     "startTime": "2024-06-10T09:00:00Z"
     }
-    ``
+    ```
 
   - **Response:**
 
-    ``json
+    ```
     {
 
     "success": true,
     "statusCode": 200,
     "message": "Rental created successfully",
     "data": {
-    "\_id": "60d9c4e4f3b4b544b8b8d1c4",
+    "_id": "60d9c4e4f3b4b544b8b8d1c4",
     "userId": "60d9c4e4f3b4b544b8b8d1c3",
     "bikeId": "60d9c4e4f3b4b544b8b8d1c4",
     "startTime": "2024-06-10T09:00:00Z",
@@ -371,6 +380,7 @@ cd bike-rental-service
     }
     }
     ``
+    ```
 
 - **Return Bike (Admin only)**
 
@@ -379,14 +389,14 @@ cd bike-rental-service
   - **Request Headers:** `Authorization: Bearer jwt_token`
   - **Response:**
 
-  ``json
+  ```
 
   {
   "success": true,
   "statusCode": 200,
   "message": "Bike returned successfully",
   "data": {
-  "\_id": "60d9c4e4f3b4b544b8b8d1c4",
+  "_id": "60d9c4e4f3b4b544b8b8d1c4",
   "userId": "60d9c4e4f3b4b544b8b8d1c3",
   "bikeId": "60d9c4e4f3b4b544b8b8d1c4",
   "startTime": "2024-06-10T09:00:00Z",
@@ -397,6 +407,8 @@ cd bike-rental-service
   }
   ``
 
+  ```
+
 - **Get All Rentals for User (My rentals)**
 
   - **Endpoint:** `/api/rentals`
@@ -404,7 +416,7 @@ cd bike-rental-service
   - **Request Headers:** `Authorization: Bearer jwt_token`
   - **Response:**
 
-    ``json
+    ```
     {
 
     "success": true,
@@ -424,6 +436,7 @@ cd bike-rental-service
     ]
     }
     ``
+    ```
 
 ## Error Handling
 
@@ -443,7 +456,7 @@ Validation errors from Zod are handled explicitly in the controllers, and other 
 
 - **Error Response Object:**
 
-  ``json
+  ```
 
   {
   "success": false,
@@ -459,9 +472,11 @@ Validation errors from Zod are handled explicitly in the controllers, and other 
 
   ``
 
+  ```
+
 - **Authentication Middleware:**
 
-  ``json
+  ```
 
   {
   "success": false,
@@ -470,3 +485,4 @@ Validation errors from Zod are handled explicitly in the controllers, and other 
   }
 
   ``
+  ```
