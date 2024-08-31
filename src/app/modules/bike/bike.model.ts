@@ -1,8 +1,6 @@
 import { Schema, model } from 'mongoose';
 import { TBike } from './bike.interface';
 
-// interface IBike extends TBike, Document {}
-
 const bikeSchema = new Schema<TBike>(
   {
     name: {
@@ -16,6 +14,10 @@ const bikeSchema = new Schema<TBike>(
     pricePerHour: {
       type: Number,
       required: [true, 'Bike pricePerHour is required'],
+    },
+    image: {
+      type: String,
+      required: [true, 'Bike image is required'],
     },
     isAvailable: {
       type: Boolean,

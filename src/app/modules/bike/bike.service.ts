@@ -10,9 +10,20 @@ const createBikeIntoDB = async (payload: TBike) => {
 };
 
 const getAllBikeFromDB = async () => {
-  const result = await Bike.find({ isAvailable: true });
+  // const result = await Bike.find({ isAvailable: true });
+  const result = await Bike.find();
 
   return result;
+};
+
+const getSingleBikeFromDB = async (bikeId: string): Promise<TBike | null> => {
+  const bike = await Bike.findById(bikeId);
+
+  if (!bike) {
+    throw new AppError(httpStatus.NOT_FOUND, 'No Data Found');
+  }
+
+  return bike;
 };
 
 const updateBikeIntoDB = async (bikeId: string, updateData: Partial<TBike>) => {
@@ -41,11 +52,7 @@ const deleteBikeFromDB = async (bikeId: string) => {
     throw new AppError(httpStatus.NOT_FOUND, 'No Data Found');
   }
 
-  const deletedBike = await Bike.findByIdAndUpdate(
-    bikeId,
-    { isAvailable: false },
-    { new: true },
-  );
+  const deletedBike = await Bike.deleteOne({ _id: bikeId });
 
   if (!deletedBike) {
     throw new AppError(httpStatus.NOT_IMPLEMENTED, 'Delete Failed');
@@ -56,6 +63,7 @@ const deleteBikeFromDB = async (bikeId: string) => {
 export const BikeServices = {
   createBikeIntoDB,
   getAllBikeFromDB,
+  getSingleBikeFromDB,
   updateBikeIntoDB,
   deleteBikeFromDB,
 };

@@ -19,10 +19,17 @@ router.put(
   auth(USER_ROLE.admin),
   RentalControllers.returnRental,
 );
+
 router.get(
   '/',
   auth(USER_ROLE.admin, USER_ROLE.user),
   RentalControllers.getUserRentals,
+);
+
+router.put(
+  '/:id/payments',
+  auth(USER_ROLE.user),
+  RentalControllers.completeRentalPayment,
 );
 
 export const RentalRoutes = router;

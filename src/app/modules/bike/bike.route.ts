@@ -19,6 +19,13 @@ router.get(
   BikeControllers.getAllBike,
 );
 
+router.get(
+  '/:id',
+  auth(USER_ROLE.admin, USER_ROLE.user),
+  // zodValidationRequest(BikeValidation.updateBikeValidationSchema),
+  BikeControllers.getSingleBike,
+);
+
 router.put(
   '/:id',
 
@@ -26,6 +33,7 @@ router.put(
   zodValidationRequest(BikeValidation.updateBikeValidationSchema),
   BikeControllers.updateBike,
 );
+
 router.delete('/:id', auth(USER_ROLE.admin), BikeControllers.deleteBike);
 
 export const BikeRoutes = router;
