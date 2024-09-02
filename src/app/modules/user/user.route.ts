@@ -19,4 +19,10 @@ router.put(
   UserControllers.updateUserProfile,
 );
 
+router.get('/', auth(USER_ROLE.admin), UserControllers.getAllUsers);
+
+router.delete('/:id', auth(USER_ROLE.admin), UserControllers.deleteUser);
+
+router.put('/:id', auth(USER_ROLE.admin), UserControllers.updateUserRole);
+
 export const UserRoutes = router;

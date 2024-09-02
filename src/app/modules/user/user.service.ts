@@ -31,7 +31,43 @@ const updateUserIntoDB = async (userId: string, payload: Partial<TUser>) => {
   return updatedUser;
 };
 
+const getAllUsersFromDB = async () => {
+  const users = await User.find().select('-password');
+  return users;
+};
+
+const deleteUserFromDB = async (userId: string) => {
+  console.log(userId);
+  if (!userId) {
+    throw new AppError(httpStatus.BAD_REQUEST, 'No user ID provided');
+  }
+  const deletedUser = await User.findByIdAndDelete(userId);
+
+  if (!deletedUser) {
+    throw new AppError(httpStatus.NOT_FOUND, 'User not found');
+  }
+
+  return deletedUser;
+};
+
+const updateUserRoleInDB = async (userId: string, role: string) => {
+  const updatedUser = await User.findByIdAndUpdate(
+    userId,
+    { role },
+    { new: true, runValidators: true },
+  ).select('-password');
+
+  if (!updatedUser) {
+    throw new AppError(httpStatus.NOT_FOUND, 'User not found');
+  }
+
+  return updatedUser;
+};
+
 export const UserServices = {
   getUserFromDB,
   updateUserIntoDB,
+  getAllUsersFromDB,
+  deleteUserFromDB,
+  updateUserRoleInDB,
 };

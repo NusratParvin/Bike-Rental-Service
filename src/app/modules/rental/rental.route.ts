@@ -14,17 +14,15 @@ router.post(
   RentalControllers.createRental,
 );
 
-router.put(
-  '/:id/return',
-  auth(USER_ROLE.admin),
-  RentalControllers.returnRental,
-);
+router.put('/:id/return', auth(USER_ROLE.admin), RentalControllers.returnBike);
 
 router.get(
   '/',
   auth(USER_ROLE.admin, USER_ROLE.user),
   RentalControllers.getUserRentals,
 );
+router.get('/', auth(USER_ROLE.user), RentalControllers.getUserRentals);
+router.get('/get', auth(USER_ROLE.admin), RentalControllers.getAllRentals);
 
 router.put(
   '/:id/payments',

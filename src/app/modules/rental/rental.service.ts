@@ -3,7 +3,7 @@ import httpStatus from 'http-status';
 import { TRental } from './rental.interface';
 import { Rental } from './rental.model';
 import { Bike } from '../bike/bike.model';
-import mongoose, { ObjectId, Types } from 'mongoose';
+import mongoose, { Types } from 'mongoose';
 import { TPayment } from '../payment/payment.interface';
 import { Payment } from '../payment/payment.model';
 
@@ -83,16 +83,6 @@ const createRentalIntoDB = async (
   }
 };
 
-// const getUserRentalsFromDB = async (userId: string) => {
-//   const rentals = await Rental.find({ userId });
-
-//   if (rentals.length === 0) {
-//     throw new AppError(httpStatus.NOT_FOUND, 'No rentals found for this user');
-//   }
-
-//   return rentals;
-// };
-
 const getUserRentalsFromDB = async (userId: string) => {
   const rentals = await Rental.find({ userId }).populate({
     path: 'bikeId',
@@ -106,36 +96,77 @@ const getUserRentalsFromDB = async (userId: string) => {
   return rentals;
 };
 
-const returnRentalIntoDB = async (rentalId: string) => {
-  const rental = await Rental.findById(rentalId);
+const getAllRentalsFromDB = async () => {
+  const rentals = await Rental.find()
+    .populate({
+      path: 'bikeId',
+      select: 'name',
+    })
+    .populate({
+      path: 'userId',
+      select: 'name email',
+    });
 
-  if (!rental) {
-    throw new AppError(httpStatus.NOT_FOUND, 'Rental info not found');
-  } else if (rental.isReturned) {
-    throw new AppError(httpStatus.NOT_FOUND, 'Bike is already returned');
+  if (rentals.length === 0) {
+    throw new AppError(httpStatus.NOT_FOUND, 'No rentals found for this user');
+  }
+
+  return rentals;
+};
+
+const returnBikeIntoDB = async (rentalId: string, returnTime: Date) => {
+  if (!mongoose.Types.ObjectId.isValid(rentalId)) {
+    throw new AppError(httpStatus.BAD_REQUEST, 'Invalid rental ID');
   }
 
   const session = await mongoose.startSession();
   session.startTransaction();
 
   try {
-    // Calculate the total cost
-    const returnTime = new Date();
-    const rentalDuration =
-      (returnTime.getTime() - rental.startTime.getTime()) / (1000 * 60 * 60);
+    // Fetch the rental details
+    const rental = await Rental.findById(rentalId).session(session);
+    if (!rental) {
+      throw new AppError(httpStatus.NOT_FOUND, 'Rental info not found');
+    }
+
+    if (rental.isReturned) {
+      throw new AppError(httpStatus.BAD_REQUEST, 'Bike is already returned');
+    }
+
     const bike = await Bike.findById(rental.bikeId).session(session);
     if (!bike) {
       throw new AppError(httpStatus.NOT_FOUND, 'Bike not found');
     }
+
+    // Calculate the rental duration in hours
+    const rentalDuration =
+      (returnTime.getTime() - rental.startTime.getTime()) / (1000 * 60 * 60);
+
+    // Calculate the total cost
     const totalCost = Number((rentalDuration * bike.pricePerHour).toFixed(2));
 
-    // Update rental and bike availability
-    await Rental.findByIdAndUpdate(
+    let paymentStatus = rental.paymentStatus;
+
+    if (totalCost <= 100) {
+      paymentStatus = 'paid';
+    }
+
+    // const updatedRental = await Rental.findByIdAndUpdate(
+    //   rentalId,
+    //   {
+    //     returnTime,
+    //     totalCost,
+    //     isReturned: true,
+    //   },
+    //   { session, new: true },
+    // );
+    const updatedRental = await Rental.findByIdAndUpdate(
       rentalId,
       {
         returnTime,
         totalCost,
         isReturned: true,
+        paymentStatus: paymentStatus,
       },
       { session, new: true },
     );
@@ -149,15 +180,69 @@ const returnRentalIntoDB = async (rentalId: string) => {
     await session.commitTransaction();
     session.endSession();
 
-    const updatedRental = await Rental.findById(rentalId);
-
     return updatedRental;
   } catch (error: any) {
     await session.abortTransaction();
     session.endSession();
-    throw new Error(error);
+    throw new AppError(
+      httpStatus.INTERNAL_SERVER_ERROR,
+      error.message || 'Failed to return bike',
+    );
   }
 };
+
+// const returnBikeIntoDB = async (rentalId: string, returnTime: Date) => {
+//   const rental = await Rental.findById(rentalId);
+
+//   if (!rental) {
+//     throw new AppError(httpStatus.NOT_FOUND, 'Rental info not found');
+//   } else if (rental.isReturned) {
+//     throw new AppError(httpStatus.NOT_FOUND, 'Bike is already returned');
+//   }
+
+//   const session = await mongoose.startSession();
+//   session.startTransaction();
+
+//   try {
+//     // Calculate the total cost
+//     const returnTime = new Date();
+//     const rentalDuration =
+//       (returnTime.getTime() - rental.startTime.getTime()) / (1000 * 60 * 60);
+//     const bike = await Bike.findById(rental.bikeId).session(session);
+//     if (!bike) {
+//       throw new AppError(httpStatus.NOT_FOUND, 'Bike not found');
+//     }
+//     const totalCost = Number((rentalDuration * bike.pricePerHour).toFixed(2));
+
+//     // Update rental and bike availability
+//     await Rental.findByIdAndUpdate(
+//       rentalId,
+//       {
+//         returnTime,
+//         totalCost,
+//         isReturned: true,
+//       },
+//       { session, new: true },
+//     );
+
+//     await Bike.findByIdAndUpdate(
+//       rental.bikeId,
+//       { isAvailable: true },
+//       { session, new: true },
+//     );
+
+//     await session.commitTransaction();
+//     session.endSession();
+
+//     const updatedRental = await Rental.findById(rentalId);
+
+//     return updatedRental;
+//   } catch (error: any) {
+//     await session.abortTransaction();
+//     session.endSession();
+//     throw new Error(error);
+//   }
+// };
 
 const completeRentalPaymentIntoDB = async (
   rentalId: string,
@@ -188,11 +273,11 @@ const completeRentalPaymentIntoDB = async (
       transactionId: paymentData.transactionId,
     },
     {
-      $inc: { amount: paymentData.amount }, // Increment the amount
+      $inc: { amount: paymentData.amount },
       paymentStatus: 'completed',
       paymentDate: new Date(),
     },
-    { new: true, upsert: true }, // Create a new record if it doesn't exist (upsert)
+    { new: true, upsert: true },
   );
 
   // Update the rental payment status
@@ -205,6 +290,7 @@ const completeRentalPaymentIntoDB = async (
 export const RentalServices = {
   createRentalIntoDB,
   getUserRentalsFromDB,
-  returnRentalIntoDB,
+  getAllRentalsFromDB,
+  returnBikeIntoDB,
   completeRentalPaymentIntoDB,
 };

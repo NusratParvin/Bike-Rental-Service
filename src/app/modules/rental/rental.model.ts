@@ -5,7 +5,7 @@ const rentalSchema = new Schema<TRental>(
   {
     userId: {
       type: Schema.Types.ObjectId,
-      ref: 'User',
+      ref: 'user',
       required: true,
     },
     bikeId: {
